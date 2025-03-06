@@ -36,7 +36,7 @@ def visualize_differences(image1, image2):
 
 uploaded_files_container = st.columns([1, 1])
 result_container = st.columns([1, 1])
-image_gray_array = []
+image_result_list = []
 
 first_uploaded_file = uploaded_files_container[0].file_uploader(
     "Загрузите первое изображение",
@@ -60,7 +60,7 @@ if first_uploaded_file:
         first_image = cv2.imdecode(first_file_bytes, 1)
         
         first_gray_image = cv2.cvtColor(first_image, cv2.COLOR_BGR2GRAY)
-        image_gray_array.append(first_gray_image)
+        image_result_list.append(first_gray_image)
         
         result_container[0].image(
             first_gray_image,
@@ -78,7 +78,7 @@ if second_uploaded_file:
         second_image = cv2.imdecode(second_file_bytes, 1)
         
         second_gray_image = cv2.cvtColor(second_image, cv2.COLOR_BGR2GRAY)
-        image_gray_array.append(second_gray_image)
+        image_result_list.append(second_gray_image)
         
         result_container[1].image(
             second_gray_image,
@@ -88,14 +88,14 @@ if second_uploaded_file:
     else:
         result_container[1].error('Ошибка, неверный формат файла')
         
-if len(image_gray_array) == 2:
+if len(image_result_list) == 2:
     # Приведение изображений к одному размеру
-    height = min(image_gray_array[0].shape[0], image_gray_array[1].shape[0])
-    width = min(image_gray_array[0].shape[1], image_gray_array[1].shape[1])
+    height = min(image_result_list[0].shape[0], image_result_list[1].shape[0])
+    width = min(image_result_list[0].shape[1], image_result_list[1].shape[1])
     
     # Изменение размера изображений
-    resized_image1 = cv2.resize(image_gray_array[0], (width, height))
-    resized_image2 = cv2.resize(image_gray_array[1], (width, height))
+    resized_image1 = cv2.resize(image_result_list[0], (width, height))
+    resized_image2 = cv2.resize(image_result_list[1], (width, height))
     
     # Вычисляем MSE и SSIM
     mse_value = mse(resized_image1, resized_image2)
